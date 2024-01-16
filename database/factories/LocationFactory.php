@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class LocationFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
     public function definition(): array
     {
         return [
-            //
+            'company_id'=>$this->faker->numberBetween(1, 5),
+            'title' => $this->faker->lastName(),
+            'zip_code' => $this->faker->postcode(),
+            'city' => $this->faker->city(),
+            'description_location' => $this->faker->text(191),
         ];
     }
 }

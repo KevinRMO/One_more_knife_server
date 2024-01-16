@@ -5,20 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class NoticeUser extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'company_id',
-        'title',
-        'zip_code',
-        'city',
-        'description_location',
+        'user_id',
+        'comment',
+        'rate_user'
     ];
 
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class, 'company_id');
+
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

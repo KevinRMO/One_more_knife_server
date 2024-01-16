@@ -3,12 +3,17 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\company>
  */
 class CompanyFactory extends Factory
 {
+
+    protected static ?string $password;
+
     /**
      * Define the model's default state.
      *
@@ -17,7 +22,19 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->lastName(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'globale_rate_company' => $this->faker->randomFloat(1,0,5),
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
         ];
+    }
+
+        public function unverified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ]);
     }
 }

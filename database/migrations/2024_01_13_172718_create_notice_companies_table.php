@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('user_id')->constrained('users');
             $table->text('comment');
-            $table->integer('rate-company');
+            $table->integer('rate_company');
             $table->timestamps();
         });
     }
