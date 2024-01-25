@@ -12,7 +12,11 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        $jobs = Job::join('locations', 'jobs.location_id', '=', 'locations.id')
+        ->select('jobs.*', 'locations.title as location_title','locations.zip_code as location_zip_code','locations.city as location_city')
+        ->get();
+        
+        return response()->json(['jobs' => $jobs]);
     }
 
     /**
