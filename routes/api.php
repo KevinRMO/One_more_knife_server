@@ -31,6 +31,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Autres routes nécessitant une authentification
     Route::post('/locations', [LocationController::class, 'store']);
     Route::get('/locations', [LocationController::class, 'index']);
+    Route::put('/locations/{id}', [LocationController::class, 'update']);
+    Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
     
     // Route pour obtenir les informations de l'utilisateur authentifié
     Route::get('/user', function (Request $request) {

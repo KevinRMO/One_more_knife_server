@@ -92,16 +92,65 @@ class LocationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, location $location)
+    public function update(Request $request, $id)
     {
-        //
+
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Validation des données du formulaire
+        $request->validate([
+            'title' => 'required',
+            'zip_code' => 'required',
+            'city' => 'required',
+            'description_location' => 'required',
+        ]);
+
+        // Recherche de la location à mettre à jour par son identifiant
+        $location = Location::find($id);
+    
+        // Vérification si la location existe
+        if (!$location) {
+            return response()->json(['message' => 'Location not found'], 404);
+        }
+    
+        // Mise à jour des attributs de la location avec les données fournies dans la requête
+        $location->update([
+            'title' => $request->title,
+            'zip_code' => $request->zip_code,
+            'city' => $request->city,
+            'description_location' => $request->description_location,
+        ]);
+    
+        // Retour d'une réponse JSON indiquant que la mise à jour a été effectuée avec succès
+        return response()->json(['message' => 'Location updated successfully']);
     }
+    
+    
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(location $location)
+    public function destroy($id)
     {
-        //
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Recherche de la location à supprimer par son identifiant
+        $location = Location::find($id);
+
+        // Vérifier si la location existe
+        if (!$location) {
+            return response()->json(['message' => 'Location not found'], 404);
+        }
+        
+        // Supprimer la location de la base de données
+        $location->delete();
+        
+        // Retourner une réponse JSON indiquant que la suppression a été effectuée avec succès
+        return response()->json(['message' => 'Location deleted successfully']);
     }
 }
