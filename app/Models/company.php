@@ -36,5 +36,15 @@ class Company extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+    
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
 }
 
