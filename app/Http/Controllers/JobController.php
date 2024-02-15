@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\job;
+use App\Models\Company;
+use App\Models\Job;
+use App\Models\Location; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class JobController extends Controller
 {
@@ -32,7 +35,38 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Vérifier si l'utilisateur de l'entreprise est authentifié
+        $company = auth()->user();
+
+        if ($company) {
+            $request->validate([
+                'title' => 'required',
+                'date_start' => 'required',
+                'date_end' => 'required',
+                'salary' => 'required',
+                'description_job' => 'required',
+                'location_id' => 'required',
+            ]);
+    
+            // Créer un nouvel enregistrement de location avec les données du formulaire
+            $job = new Job([
+                'company_id' => $company->id,
+                'location_id' => $request->input('location_id'),
+                'title' => $request->input('title'),
+                'date_start' => $request->input('date_start'),
+                'date_end' => $request->input('date_end'),
+                'salary' => $request->input('salary'),
+                'description_job' => $request->input('description_job'),
+            ]);
+    
+            // Enregistrer l'enregistrement dans la base de données
+            $job->save();
+    
+            return response()->json(['message' => 'Location created successfully']);
+        } else {
+            // Gérer le cas où l'entreprise n'est pas authentifiée
+            return response()->json(['message' => 'Company not authenticated'], 401);
+        }
     }
 
     /**
