@@ -16,7 +16,7 @@ class JobController extends Controller
     public function index()
     {
         $jobs = Job::join('locations', 'jobs.location_id', '=', 'locations.id')
-        ->select('jobs.*', 'locations.title as location_title','locations.zip_code as location_zip_code','locations.city as location_city')
+        ->select('jobs.*', 'locations.title as location_title','locations.zip_code as location_zip_code','locations.city as location_city','locations.description_location')
         ->get();
         
         return response()->json(['jobs' => $jobs]);
@@ -35,6 +35,7 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
+        //
         // Vérifier si l'utilisateur de l'entreprise est authentifié
         $company = auth()->user();
 
@@ -47,7 +48,7 @@ class JobController extends Controller
                 'description_job' => 'required',
                 'location_id' => 'required',
             ]);
-    
+
             // Créer un nouvel enregistrement de location avec les données du formulaire
             $job = new Job([
                 'company_id' => $company->id,
@@ -58,10 +59,10 @@ class JobController extends Controller
                 'salary' => $request->input('salary'),
                 'description_job' => $request->input('description_job'),
             ]);
-    
+
             // Enregistrer l'enregistrement dans la base de données
             $job->save();
-    
+
             return response()->json(['message' => 'Location created successfully']);
         } else {
             // Gérer le cas où l'entreprise n'est pas authentifiée
@@ -90,7 +91,40 @@ class JobController extends Controller
      */
     public function update(Request $request, job $job)
     {
-        //
+
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Validation des données du formulaire
+        $request->validate([
+            'title' => 'required',
+            'date_start' => 'required',
+            'date_end' => 'required',
+            'salary' => 'required',
+            'description_job' => 'required',
+            'location_id' => 'required',
+        ]);
+
+        // Recherche de la location à mettre à jour par son identifiant
+        $location = Location::find($id);
+    
+        // Vérification si la location existe
+        if (!$location) {
+            return response()->json(['message' => 'Location not found'], 404);
+        }
+    
+        // Mise à jour des attributs de la location avec les données fournies dans la requête
+        $location->update([
+            'title' => $request->title,
+            'zip_code' => $request->zip_code,
+            'city' => $request->city,
+            'description_location' => $request->description_location,
+            
+        ]);
+    
+        // Retour d'une réponse JSON indiquant que la mise à jour a été effectuée avec succès
+        return response()->json(['message' => 'Location updated successfully']);
     }
 
     /**

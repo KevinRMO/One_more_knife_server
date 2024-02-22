@@ -36,7 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // Route Création d'un emploi
     Route::post('/jobs', [JobController::class, 'store']);
-
+    Route::put('/jobs/{id}', [JobController::class, 'update']);
     // Route pour obtenir les informations de l'utilisateur authentifié
     Route::get('/user', function (Request $request) {
         return $request->user();
