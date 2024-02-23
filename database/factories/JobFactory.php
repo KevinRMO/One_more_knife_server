@@ -18,6 +18,7 @@ class JobFactory extends Factory
     {
         return [
             'location_id'=>$this->faker->numberBetween(1, 5),
+            'company_id'=>$this->faker->numberBetween(1, 5),
             'title' => $this->faker->jobTitle(),
             'date_start' => $this->faker->date(),
             'date_end' => $this->faker->date(),

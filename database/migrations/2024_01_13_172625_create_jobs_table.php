@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('location_id')->constrained('locations');
+            $table->foreignId('company_id')->constrained('companies');
             $table->string('title');
             $table->date('date_start');
             $table->date('date_end');
