@@ -111,7 +111,7 @@ public function store(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, job $job)
+    public function update(Request $request, $id)
     {
 
         if (!auth()->check()) {
@@ -129,31 +129,49 @@ public function store(Request $request)
         ]);
 
         // Recherche de la location à mettre à jour par son identifiant
-        $location = Location::find($id);
+        $job = Job::find($id);
     
-        // Vérification si la location existe
-        if (!$location) {
-            return response()->json(['message' => 'Location not found'], 404);
+        // Vérification si la job existe
+        if (!$job) {
+            return response()->json(['message' => 'job not found'], 404);
         }
     
-        // Mise à jour des attributs de la location avec les données fournies dans la requête
-        $location->update([
+        // Mise à jour des attributs de la job avec les données fournies dans la requête
+        $job->update([
             'title' => $request->title,
-            'zip_code' => $request->zip_code,
-            'city' => $request->city,
-            'description_location' => $request->description_location,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end,
+            'salary' => $request->salary,
+            'description_job' => $request->description_job,
+            'location_id' => $request->location_id,
             
         ]);
     
         // Retour d'une réponse JSON indiquant que la mise à jour a été effectuée avec succès
-        return response()->json(['message' => 'Location updated successfully']);
+        return response()->json(['message' => 'Job updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(job $job)
+    public function destroy($id)
     {
-        //
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Recherche de la location à supprimer par son identifiant
+        $job = Job::find($id);
+
+        // Vérifier si la location existe
+        if (!$job) {
+            return response()->json(['message' => 'Job not found'], 404);
+        }
+        
+        // Supprimer la location de la base de données
+        $job->delete();
+        
+        // Retourner une réponse JSON indiquant que la suppression a été effectuée avec succès
+        return response()->json(['message' => 'Job deleted successfully']);
     }
 }
