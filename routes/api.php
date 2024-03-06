@@ -7,7 +7,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProfilUSerController;
+use App\Http\Controllers\ProfilUserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,7 +33,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/locations', [LocationController::class, 'index']);
     Route::put('/locations/{id}', [LocationController::class, 'update']);
     Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
-    
+
+    // Route Profil Users
+    Route::get('/profil-user', [ProfilUserController::class, 'index']);
+
+
+
     // Route Création d'un emploi
     Route::get('/jobs{id}', [JobController::class, 'annonce']);
     Route::post('/jobs', [JobController::class, 'store']);

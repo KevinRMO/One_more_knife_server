@@ -13,7 +13,15 @@ class ProfilUserController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+
+        if ($user) {
+            // Retourner les données de l'utilisateur connecté
+            return response()->json(['user' => $user]);
+        } else {
+            // Retourner un message d'erreur si l'utilisateur n'est pas connecté
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
     }
 
     /**
