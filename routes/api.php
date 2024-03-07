@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Route Profil Users
     Route::get('/profil-user', [ProfilUserController::class, 'index']);
+    Route::put('/edit-profil-user', [ProfilUserController::class, 'update']);
 
 
 

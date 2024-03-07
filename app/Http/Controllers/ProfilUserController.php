@@ -69,10 +69,44 @@ class ProfilUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        // Vérifier si l'utilisateur est authentifié
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        
+        // Récupérer l'utilisateur connecté
+        $user = auth()->user();
+        
+        // Validation des données du formulaire
+        $request->validate([
+            'lastname' => 'required',
+            'firstname' => 'required',
+            'birth_date' => 'required',
+            'zip_code' => 'required',
+            'city' => 'required',
+            'phone' => 'required',
+            'cv_path' => 'required',
+            'email' => 'required',
+        ]);
+    
+        // Mise à jour des attributs de l'utilisateur avec les données fournies dans la requête
+        $user->update([
+            'lastname' => $request->lastname,
+            'firstname' => $request->firstname,
+            'birth_date' => $request->birth_date,
+            'zip_code' => $request->zip_code,
+            'city' => $request->city,
+            'phone' => $request->phone,
+            'cv_path' => $request->cv_path,
+            'email' => $request->email,
+        ]);
+    
+        // Retour d'une réponse JSON indiquant que la mise à jour a été effectuée avec succès
+        return response()->json(['message' => 'User updated successfully']);
     }
+    
 
     /**
      * Remove the specified resource from storage.
