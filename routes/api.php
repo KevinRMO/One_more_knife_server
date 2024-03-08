@@ -8,6 +8,8 @@ use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfilUserController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,8 +37,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
 
     // Route Profil Users
-    Route::get('/profil-user', [ProfilUserController::class, 'index']);
-    Route::put('/edit-profil-user', [ProfilUserController::class, 'update']);
+    Route::get('/profil-user', [RegisterUserController::class, 'index']);
+    Route::put('/edit-profil-user', [RegisterUserController::class, 'update']);
 
 
 
